@@ -28,7 +28,7 @@ function LikeButton({ liked, label, action }: LikeButtonProps) {
         value={String(!isLiked)}
         type="submit"
       >
-        {isLiked ? "♥" : "♡"}
+        {isLiked ? "❤️" : "🤍"}
       </button>
     </fetcher.Form>
   );
