@@ -30,6 +30,10 @@ function LikeButton({ liked, label, action }: LikeButtonProps) {
       >
         {isLiked ? "❤️" : "🤍"}
       </button>
+
+      {fetcher.data?.error ? (
+        <div style={{ color: "red" }}>{fetcher.data.error}</div>
+      ) : null}
     </fetcher.Form>
   );
 }
@@ -48,9 +52,21 @@ let story: Meta<typeof LikeButton> = {
           loader: () => {
             return args;
           },
-          action: async ({ request }) => {
+          action: async ({ request, params }) => {
             let formData = await request.formData();
             await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            if (params.postId === "2") {
+              return new Response(
+                JSON.stringify({ error: "something went wrong" }),
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+            }
+
             updateArgs({ liked: formData.get("liked") === "true" });
             return null;
           },
@@ -72,16 +88,16 @@ export default story;
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: StoryFn<typeof LikeButton> = (args) => <LikeButton {...args} />;
 
-export const Liked = Template.bind({});
-Liked.args = {
+export const HappyPath = Template.bind({});
+HappyPath.args = {
   action: "/post/1",
   label: "Fake Post",
-  liked: true,
+  liked: false,
 };
 
-export const NotLiked = Template.bind({});
-NotLiked.args = {
-  action: "/post/1",
+export const Error = Template.bind({});
+Error.args = {
+  action: "/post/2",
   label: "Fake Post",
   liked: false,
 };

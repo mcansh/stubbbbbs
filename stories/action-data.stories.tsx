@@ -38,41 +38,36 @@ function MyComponent() {
       >
         Username
       </label>
-      <div
+      <input
+        type="text"
+        name="username"
+        id="username"
         style={{
-          position: "relative",
-          marginTop: "4px",
-          borderRadius: "4px",
+          marginTop: 4,
+          display: "block",
+          width: "100%",
+          borderRadius: 6,
+          borderWidth: 1,
+          borderStyle: "solid",
+          borderColor:
+            actionData && "error" in actionData ? "#fca5a5" : "#d1d5db",
+          paddingRight: 40,
+          color: actionData && "error" in actionData ? "#7f1d1d" : "black",
+          paddingTop: 8,
+          paddingBottom: 8,
+          paddingLeft: 12,
           boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         }}
-      >
-        <input
-          type="text"
-          name="username"
-          id="username"
-          style={{
-            display: "block",
-            width: "100%",
-            borderRadius: "6px",
-            border: "1px solid #fca5a5",
-            paddingRight: "40px",
-            color: "#7f1d1d",
-            paddingTop: 8,
-            paddingBottom: 8,
-            paddingLeft: 12,
-          }}
-          placeholder="adamwathan"
-          aria-invalid={
-            actionData && "error" in actionData ? "true" : undefined
-          }
-          aria-describedby="username-error"
-        />
-      </div>
+        placeholder="adamwathan"
+        aria-invalid={actionData && "error" in actionData ? "true" : undefined}
+        aria-describedby="username-error"
+      />
+
       {actionData && "error" in actionData ? (
         <p
           style={{
-            marginTop: "8px",
-            fontSize: "12px",
+            marginTop: 8,
+            fontSize: 14,
             color: "#dc2626",
           }}
           id="username-error"
