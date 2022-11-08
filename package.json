@@ -2,6 +2,9 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
+    "build": "remix build",
+    "dev": "remix dev",
+    "start": "remix-serve build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "postinstall": "./postinstall.sh"
@@ -10,14 +13,14 @@
     "@remix-run/node": "file:.yalc/@remix-run/node",
     "@remix-run/react": "file:.yalc/@remix-run/react",
     "@remix-run/serve": "file:.yalc/@remix-run/serve",
-    "@remix-run/server-runtime": "file:.yalc/@remix-run/server-runtime",
-    "@remix-run/testing": "file:.yalc/@remix-run/testing",
+    "isbot": "^3.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@remix-run/dev": "file:.yalc/@remix-run/dev",
     "@remix-run/eslint-config": "^1.7.5",
+    "@remix-run/testing": "file:.yalc/@remix-run/testing",
     "@storybook/addon-essentials": "7.0.0-alpha.46",
     "@storybook/addon-interactions": "7.0.0-alpha.46",
     "@storybook/addon-links": "7.0.0-alpha.46",

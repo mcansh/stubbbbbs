@@ -59,11 +59,7 @@ let story: Meta<typeof LikeButton> = {
             if (params.postId === "2") {
               return new Response(
                 JSON.stringify({ error: "something went wrong" }),
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
+                { headers: { "Content-Type": "application/json" } }
               );
             }
 
