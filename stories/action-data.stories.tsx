@@ -1,6 +1,6 @@
 import { createRemixStub } from "@remix-run/testing";
 import type { StoryFn, Meta } from "@storybook/react";
-import { action, MyComponent } from "~/routes/form";
+import { action, MyComponent } from "../app/routes/form";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 let story: Meta<typeof MyComponent> = {
@@ -12,9 +12,7 @@ let story: Meta<typeof MyComponent> = {
         {
           path: "/",
           element: <Story />,
-          async action(args) {
-            return action({ ...args, context: {} });
-          },
+          action: (args) => action({ ...args, context: {} }),
         },
       ]);
 

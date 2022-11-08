@@ -6,8 +6,12 @@ export async function action({ request }: ActionArgs) {
   let formData = await request.formData();
   let username = formData.get("username");
 
-  if (!username) {
+  if (!username || typeof username !== "string") {
     return json({ error: "username is required" }, { status: 400 });
+  }
+
+  if (["admin", "superuser", ""].includes(username.toLowerCase())) {
+    return json({ error: "username is taken" }, { status: 400 });
   }
 
   return json({ message: `username successfully changed to "${username}"` });
