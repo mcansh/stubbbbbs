@@ -7,17 +7,17 @@
     "postinstall": "./postinstall.sh"
   },
   "dependencies": {
-    "@remix-run/node": "^1.7.5",
+    "@remix-run/node": "file:.yalc/@remix-run/node",
     "@remix-run/react": "file:.yalc/@remix-run/react",
-    "@remix-run/serve": "^1.7.5",
+    "@remix-run/serve": "file:.yalc/@remix-run/serve",
     "@remix-run/server-runtime": "file:.yalc/@remix-run/server-runtime",
     "@remix-run/testing": "file:.yalc/@remix-run/testing",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.7.5-pre.0",
-    "@remix-run/eslint-config": "^1.7.5-pre.0",
+    "@remix-run/dev": "file:.yalc/@remix-run/dev",
+    "@remix-run/eslint-config": "^1.7.5",
     "@storybook/addon-essentials": "7.0.0-alpha.46",
     "@storybook/addon-interactions": "7.0.0-alpha.46",
     "@storybook/addon-links": "7.0.0-alpha.46",

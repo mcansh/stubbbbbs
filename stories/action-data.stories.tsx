@@ -2,17 +2,27 @@ import { createRemixStub } from "@remix-run/testing";
 import type { StoryFn, Meta } from "@storybook/react";
 import { Form, useActionData } from "@remix-run/react";
 import type { ActionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 
 async function action({ request }: ActionArgs) {
   let formData = await request.formData();
   let username = formData.get("username");
 
+  console.log({ username });
+
   if (!username) {
-    return json({ error: "username is required" }, { status: 400 });
+    return new Response(JSON.stringify({ error: "username is required" }), {
+      status: 400,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
-  return json({ username });
+  return new Response(JSON.stringify({ username }), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 function MyComponent() {
