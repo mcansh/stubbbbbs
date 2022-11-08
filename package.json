@@ -3,7 +3,8 @@
   "sideEffects": false,
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "postinstall": "./postinstall.sh"
   },
   "dependencies": {
     "@remix-run/node": "^1.7.5",
