@@ -9,8 +9,6 @@ yarn
 yarn build --tsc
 npm i -g yalc
 ./yalc.sh
-cd build/node_modules/@remix-run
-cd -
 cd ../stubbbbbs
 npm i
 npm run storybook
