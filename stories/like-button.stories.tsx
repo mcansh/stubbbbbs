@@ -1,42 +1,8 @@
 import type { StoryFn, Meta } from "@storybook/react";
+import { userEvent, within } from "@storybook/testing-library";
 import { useArgs } from "@storybook/client-api";
 import { createRemixStub } from "@remix-run/testing";
-import { useFetcher } from "@remix-run/react";
-
-interface LikeButtonProps {
-  label: string;
-  liked: boolean;
-  action: string;
-}
-
-function LikeButton({ liked, label, action }: LikeButtonProps) {
-  let fetcher = useFetcher();
-  let isLiked = fetcher.submission
-    ? fetcher.submission.formData?.get("liked") === "true"
-    : liked;
-
-  return (
-    <fetcher.Form method="post" action={action}>
-      {/* jsdom doesn't support passing the value of the form submit button since
-          it filters out all buttons from form data in the following code.
-          https://github.com/jsdom/jsdom/blob/e285763ebf46bbc9c883a519c9a18231f5ede9d8/lib/jsdom/living/xhr/FormData-impl.js#L109 */}
-      <input type="hidden" name="liked" value={String(!isLiked)} />
-
-      <button
-        aria-label={label}
-        name="liked"
-        value={String(!isLiked)}
-        type="submit"
-      >
-        {isLiked ? "❤️" : "🤍"}
-      </button>
-
-      {fetcher.data?.error ? (
-        <div style={{ color: "red" }}>{fetcher.data.error}</div>
-      ) : null}
-    </fetcher.Form>
-  );
-}
+import { LikeButton } from "../app/routes/post.$postId";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 let story: Meta<typeof LikeButton> = {
@@ -96,4 +62,9 @@ Error.args = {
   action: "/post/2",
   label: "Fake Post",
   liked: false,
+};
+
+Error.play = async ({ canvasElement }) => {
+  let canvas = within(canvasElement);
+  userEvent.click(canvas.getByRole("button"));
 };

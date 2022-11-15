@@ -5,11 +5,22 @@ const config: StorybookConfig = {
     "../stories/**/*.stories.mdx",
     "../stories/**/*.stories.@(js|jsx|ts|tsx)",
   ],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
-  core: {
-    builder: "@storybook/builder-vite",
-  },
+  addons: [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
+  ],
+  core: { builder: "@storybook/builder-vite" },
   framework: "@storybook/react-vite",
+  async viteFinal(config) {
+    return {
+      ...config,
+      define: {
+        ...config.define,
+        global: "window",
+      },
+    };
+  },
 };
 
 export default config;
