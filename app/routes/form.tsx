@@ -1,103 +1,131 @@
 import type { ActionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
+import { json } from "../json";
 
 export async function action({ request }: ActionArgs) {
   let formData = await request.formData();
-  let username = formData.get("username");
+  let email = formData.get("email");
+  let password = formData.get("password");
 
-  if (!username || typeof username !== "string") {
-    return json({ error: "username is required" }, { status: 400 });
+  if (typeof email !== "string" || typeof password !== "string") {
+    return json(
+      {
+        message: undefined,
+        errors: {
+          email: "Email is required",
+          password: "Password is required",
+        },
+      },
+      { status: 400 }
+    );
   }
 
-  if (["admin", "superuser", ""].includes(username.toLowerCase())) {
-    return json({ error: "username is taken" }, { status: 400 });
+  if (password.length < 8) {
+    return json(
+      {
+        message: undefined,
+        errors: {
+          email: undefined,
+          password: "Password must be at least 8 characters",
+        },
+      },
+      { status: 400 }
+    );
   }
 
-  return json({ message: `username successfully changed to "${username}"` });
+  return json({
+    message: "Successfully signed up",
+    errors: undefined,
+  });
 }
 
-export function MyComponent({ name }: { name?: string }) {
-  let actionData = useActionData<{ error?: string; message?: string }>();
+export default function LoginPage() {
+  let actionData = useActionData<typeof action>();
+
+  let emailError =
+    actionData && "errors" in actionData && "email" in actionData.errors
+      ? actionData.errors.email
+      : undefined;
+  let passwordError =
+    actionData && "errors" in actionData
+      ? actionData.errors.password
+      : undefined;
 
   return (
-    <Form
-      method="post"
-      style={{
-        maxWidth: "300px",
-        fontFamily:
-          "Inter var,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji",
-      }}
-    >
-      <label
-        htmlFor="username"
-        style={{
-          display: "block",
-          fontSize: "14px",
-          fontWeight: 500,
-          color: "#374151",
-        }}
-      >
-        Username
-      </label>
-      <input
-        type="text"
-        name="username"
-        id="username"
-        style={{
-          marginTop: 4,
-          display: "block",
-          width: "100%",
-          borderRadius: 6,
-          borderWidth: 1,
-          borderStyle: "solid",
-          borderColor:
-            actionData && "error" in actionData ? "#fca5a5" : "#d1d5db",
-          paddingRight: 40,
-          color: actionData && "error" in actionData ? "#7f1d1d" : "black",
-          paddingTop: 8,
-          paddingBottom: 8,
-          paddingLeft: 12,
-          boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        }}
-        placeholder="adamwathan"
-        aria-invalid={actionData && "error" in actionData ? "true" : undefined}
-        aria-describedby="username-error"
-        defaultValue={name}
-      />
-
-      {actionData && actionData.error ? (
-        <p
-          style={{
-            marginTop: 8,
-            fontSize: 14,
-            color: "#dc2626",
-          }}
-          id="username-error"
-        >
-          {actionData.error}
-        </p>
-      ) : null}
-
-      {actionData && actionData.message ? (
-        <p
-          style={{
-            marginTop: 8,
-            fontSize: 14,
-            color: "#16a34a",
-          }}
-        >
-          {actionData.message}
-        </p>
-      ) : null}
-
-      <button type="submit" style={{ marginTop: "8px" }}>
-        Submit
-      </button>
-    </Form>
+    <div className="flex min-h-full flex-col justify-center">
+      <div className="mx-auto w-full max-w-md px-8">
+        <LoginForm emailError={emailError} passwordError={passwordError} />
+      </div>
+    </div>
   );
 }
 
-export default function Page() {
-  return <MyComponent />;
+export function LoginForm({
+  emailError,
+  passwordError,
+}: {
+  emailError?: string;
+  passwordError?: string;
+}) {
+  return (
+    <Form method="post" className="space-y-6">
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Email address
+        </label>
+        <div className="mt-1">
+          <input
+            id="email"
+            autoFocus={true}
+            name="email"
+            type="email"
+            autoComplete="email"
+            aria-invalid={emailError ? true : undefined}
+            aria-describedby={emailError ? "email-error" : undefined}
+            className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+          />
+          {emailError && (
+            <div className="pt-1 text-red-700" id="email-error">
+              {emailError}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Password
+        </label>
+        <div className="mt-1">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            aria-invalid={passwordError ? true : undefined}
+            aria-describedby={passwordError ? "password-error" : undefined}
+            className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+          />
+          {passwordError && (
+            <div className="pt-1 text-red-700" id="password-error">
+              {passwordError}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+      >
+        Log in
+      </button>
+    </Form>
+  );
 }

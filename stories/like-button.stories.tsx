@@ -1,13 +1,18 @@
 import type { StoryFn, Meta } from "@storybook/react";
-import { userEvent, within } from "@storybook/testing-library";
 import { useArgs } from "@storybook/client-api";
 import { createRemixStub } from "@remix-run/testing";
 import { LikeButton } from "../app/routes/post.$postId";
+import { json } from "../app/json";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 let story: Meta<typeof LikeButton> = {
   title: "Example/LikeButton",
   component: LikeButton,
+  argTypes: {
+    action: { table: { disable: true } },
+    label: { table: { disable: true } },
+    liked: { table: { disable: true } },
+  },
   decorators: [
     (Story) => {
       const [args, updateArgs] = useArgs();
@@ -20,13 +25,10 @@ let story: Meta<typeof LikeButton> = {
           },
           action: async ({ request, params }) => {
             let formData = await request.formData();
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 1_000));
 
             if (params.postId === "2") {
-              return new Response(
-                JSON.stringify({ error: "something went wrong" }),
-                { headers: { "Content-Type": "application/json" } }
-              );
+              return json({ error: "something went wrong" }, { status: 500 });
             }
 
             updateArgs({ liked: formData.get("liked") === "true" });
@@ -34,7 +36,6 @@ let story: Meta<typeof LikeButton> = {
           },
         },
       ]);
-
       return (
         <RemixStub
           initialLoaderData={{ "/post/1": args }}
@@ -62,9 +63,4 @@ Error.args = {
   action: "/post/2",
   label: "Fake Post",
   liked: false,
-};
-
-Error.play = async ({ canvasElement }) => {
-  let canvas = within(canvasElement);
-  userEvent.click(canvas.getByRole("button"));
 };

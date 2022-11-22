@@ -8,6 +8,9 @@ export default function Index() {
         <li>
           <Link to="form">Form</Link>
         </li>
+        <li>
+          <Link to="post/1">Like Button</Link>
+        </li>
       </ul>
     </div>
   );
