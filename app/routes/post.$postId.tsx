@@ -1,13 +1,14 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 
-interface LikeButtonProps {
+export interface LikeButtonProps {
   label: string;
   liked: boolean;
   action: string;
 }
 
 export function LikeButton({ liked, label, action }: LikeButtonProps) {
+  console.log({ liked, label, action });
   let fetcher = useFetcher();
   let isLiked = fetcher.submission
     ? fetcher.submission.formData?.get("liked") === "true"
