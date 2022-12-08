@@ -1,5 +1,5 @@
-import { createRemixStub } from "@remix-run/testing";
-import type { Meta, StoryFn } from "@storybook/react";
+import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
+import type { Meta } from "@storybook/react";
 import { Outlet, useActionData } from "@remix-run/react";
 import { LoginForm } from "../app/routes/form";
 import { json } from "../app/json";
@@ -36,6 +36,7 @@ let story: Meta<typeof LoginForm> = {
           children: [
             {
               path: "/login",
+              // @ts-expect-error shrug
               element: <Story />,
               async action({ request }) {
                 let formData = await request.formData();

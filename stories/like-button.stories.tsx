@@ -1,6 +1,6 @@
 import type { StoryFn, Meta } from "@storybook/react";
 import { useArgs } from "@storybook/client-api";
-import { createRemixStub } from "@remix-run/testing";
+import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
 import { LikeButton } from "../app/routes/post.$postId";
 import { json } from "../app/json";
 
