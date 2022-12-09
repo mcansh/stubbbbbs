@@ -15,6 +15,9 @@ function StoryPost() {
 let story: Meta<typeof LikeButton> = {
   title: "Example/LikeButton",
   component: StoryPost,
+  // hide the args table for the component
+  // as we're only using them for initial values
+  // and updating everything through remix
   argTypes: {
     action: { table: { disable: true } },
     label: { table: { disable: true } },
