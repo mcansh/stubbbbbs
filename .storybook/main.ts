@@ -10,6 +10,9 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
   ],
+  features: {
+    interactionsDebugger: true, // 👈 Enable playback controls
+  },
   core: { builder: "@storybook/builder-vite" },
   framework: "@storybook/react-vite",
   async viteFinal(config) {
