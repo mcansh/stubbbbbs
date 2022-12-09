@@ -47,7 +47,9 @@ let story: Meta<typeof LikeButton> = {
 
 export default story;
 
-export const MockedSuccess: StoryFn = (_args) => <StoryPost />;
+const Template: StoryFn = (_args) => <StoryPost />;
+
+export const MockedSuccess = Template.bind({});
 
 MockedSuccess.args = {
   action: "/post/1",
@@ -73,7 +75,7 @@ MockedSuccess.parameters = {
   },
 };
 
-export const MockedError: StoryFn = (_args) => <StoryPost />;
+export const MockedError = Template.bind({});
 
 MockedError.args = {
   action: "/post/2",

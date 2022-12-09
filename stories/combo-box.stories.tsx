@@ -7,7 +7,8 @@ let story: Meta<typeof Combobox> = {
   title: "Example/Combobox",
   component: Combobox,
   decorators: [
-    (Story) => {
+    (Story, { args, parameters }) => {
+      let remix = parameters.remix(args);
       const RemixStub = createRemixStub([
         {
           path: "/",
@@ -16,15 +17,7 @@ let story: Meta<typeof Combobox> = {
         // @ts-expect-error
         {
           path: "/users",
-          loader() {
-            return [
-              {
-                first_name: "Ryan",
-                last_name: "Florence",
-                username: "ryanflorence",
-              },
-            ];
-          },
+          loader: remix.loader,
         },
       ]);
 
@@ -35,4 +28,32 @@ let story: Meta<typeof Combobox> = {
 
 export default story;
 
-export const ComboboxStory: StoryFn<typeof Combobox> = (_args) => <Combobox />;
+const Template: StoryFn<typeof Combobox> = (_args) => <Combobox />;
+
+export const ComboboxStory = Template.bind({});
+ComboboxStory.parameters = {
+  remix(args: any) {
+    return {
+      loader() {
+        return [
+          {
+            first_name: "Ryan",
+            last_name: "Florence",
+            username: "ryanflorence",
+          },
+        ];
+      },
+    };
+  },
+};
+
+export const NoResultsComboboxStory = Template.bind({});
+NoResultsComboboxStory.parameters = {
+  remix(args: any) {
+    return {
+      loader() {
+        return [];
+      },
+    };
+  },
+};
