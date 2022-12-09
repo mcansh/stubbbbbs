@@ -54,8 +54,8 @@ ComboboxStory.play = async ({ canvasElement }) => {
 
   let input = canvas.getByRole("textbox");
   userEvent.type(input, "Ryan", { delay: 1 });
-  await canvas.findByText(/Ryan/);
-  expect(canvas.getByText(/Ryan/)).toBeInTheDocument();
+  await canvas.findByText(/ryan/i);
+  expect(canvas.getByText(/ryan/i)).toBeInTheDocument();
 };
 
 export const NoResultsComboboxStory = Template.bind({});
@@ -67,4 +67,13 @@ NoResultsComboboxStory.parameters = {
       },
     };
   },
+};
+
+NoResultsComboboxStory.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+
+  let input = canvas.getByRole("textbox");
+  userEvent.type(input, "Ryan", { delay: 1 });
+  await canvas.findByText(/no users found/i);
+  expect(canvas.getByText(/no users found/i)).toBeInTheDocument();
 };
