@@ -1,5 +1,6 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
+import { json } from "../json";
 
 export interface LikeButtonProps {
   label: string;
@@ -8,7 +9,6 @@ export interface LikeButtonProps {
 }
 
 export function LikeButton({ liked, label, action }: LikeButtonProps) {
-  console.log({ liked, label, action });
   let fetcher = useFetcher();
   let isLiked = fetcher.submission
     ? fetcher.submission.formData?.get("liked") === "true"
@@ -48,9 +48,7 @@ export async function action({ request, params }: ActionArgs) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (params.postId === "2") {
-    return new Response(JSON.stringify({ error: "something went wrong" }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return json({ error: "something went wrong" }, { status: 422 });
   }
 
   fakePost.liked = formData.get("liked") === "true";

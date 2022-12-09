@@ -1,66 +1,28 @@
 import type { StoryFn, Meta } from "@storybook/react";
 import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
-import type { LikeButtonProps } from "../app/routes/post.$postId";
 import { LikeButton } from "../app/routes/post.$postId";
 import { json } from "../app/json";
-import type { DataFunctionArgs, TypedResponse } from "@remix-run/node";
+import type { DataFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-
-interface SetupResult {
-  loader: () =>
-    | Promise<TypedResponse<LikeButtonProps>>
-    | TypedResponse<LikeButtonProps>
-    | LikeButtonProps;
-  action: (args: DataFunctionArgs) => Promise<Response | null>;
-}
 
 function StoryPost() {
   let data = useLoaderData();
-
+  console.log("data", data);
   return <LikeButton {...data} />;
 }
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 let story: Meta<typeof LikeButton> = {
   title: "Example/LikeButton",
-  component: LikeButton,
-  args: {},
-  parameters: {
-    remix(setup: any): SetupResult {
-      let scopedJunk: LikeButtonProps = {
-        action: "/post/1",
-        label: "Fake Post",
-        liked: false,
-      };
-
-      return {
-        loader: async () => {
-          console.log("loader", scopedJunk);
-          return json(scopedJunk);
-        },
-        async action({ request, params }: DataFunctionArgs) {
-          console.log("action", params);
-          let formData = await request.formData();
-          await new Promise((resolve) => setTimeout(resolve, 2_000));
-
-          if (params.postId === "2") {
-            return json({ error: "something went wrong" }, { status: 500 });
-          }
-
-          scopedJunk.liked = formData.get("liked") === "true";
-          return null;
-        },
-      };
-    },
+  component: StoryPost,
+  argTypes: {
+    action: { table: { disable: true } },
+    label: { table: { disable: true } },
+    liked: { table: { disable: true } },
   },
   decorators: [
-    (Story, init) => {
-      console.log(init);
-
-      let remix = init.parameters.remix();
-
-      console.log(remix);
-
+    (Story, { parameters, args }) => {
+      let remix = parameters.remix(args);
       const RemixStub = createRemixStub([
         {
           path: "/post/:postId",
@@ -69,10 +31,11 @@ let story: Meta<typeof LikeButton> = {
           loader: remix.loader,
         },
       ]);
+
       return (
         <RemixStub
-          initialLoaderData={{ "/post/1": remix.loader }}
-          initialEntries={["/post/1"]}
+          initialLoaderData={{ [args.action]: args }}
+          initialEntries={[args.action]}
         />
       );
     },
@@ -81,4 +44,52 @@ let story: Meta<typeof LikeButton> = {
 
 export default story;
 
-export const Default: StoryFn = (_args) => <StoryPost />;
+export const MockedSuccess: StoryFn = (_args) => <StoryPost />;
+
+MockedSuccess.args = {
+  action: "/post/1",
+  label: "Fake Post",
+  liked: false,
+};
+
+MockedSuccess.parameters = {
+  remix(args: any) {
+    let scopedJunk = args;
+
+    return {
+      loader: async () => {
+        return json(scopedJunk);
+      },
+      async action({ request }: DataFunctionArgs) {
+        let formData = await request.formData();
+        await new Promise((resolve) => setTimeout(resolve, 2_000));
+        scopedJunk.liked = formData.get("liked") === "true";
+        return null;
+      },
+    };
+  },
+};
+
+export const MockedError: StoryFn = (_args) => <StoryPost />;
+
+MockedError.args = {
+  action: "/post/2",
+  label: "Fake Post 2",
+  liked: false,
+};
+
+MockedError.parameters = {
+  remix(args: any) {
+    let scopedJunk = args;
+
+    return {
+      loader: async () => {
+        return json(scopedJunk);
+      },
+      async action() {
+        await new Promise((resolve) => setTimeout(resolve, 2_000));
+        return json({ error: "something went wrong" }, { status: 422 });
+      },
+    };
+  },
+};
