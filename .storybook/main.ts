@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/builder-vite";
+import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
   stories: [
@@ -16,13 +17,14 @@ const config: StorybookConfig = {
   core: { builder: "@storybook/builder-vite" },
   framework: "@storybook/react-vite",
   async viteFinal(config) {
-    return {
-      ...config,
+    return mergeConfig(config, {
       define: {
-        ...config.define,
         global: "window",
+        process: {
+          env: {},
+        },
       },
-    };
+    });
   },
 };
 

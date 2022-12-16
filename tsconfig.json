@@ -11,6 +11,7 @@
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
 
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
