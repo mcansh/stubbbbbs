@@ -15,17 +15,17 @@
     "test-storybook": "test-storybook"
   },
   "dependencies": {
-    "@remix-run/node": "1.9.0-pre.0",
-    "@remix-run/react": "1.9.0-pre.0",
-    "@remix-run/serve": "1.9.0-pre.0",
+    "@remix-run/node": "1.10.0-pre.0",
+    "@remix-run/react": "1.10.0-pre.0",
+    "@remix-run/serve": "1.10.0-pre.0",
     "isbot": "3.6.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "1.9.0-pre.0",
-    "@remix-run/eslint-config": "1.9.0-pre.0",
-    "@remix-run/testing": "1.9.0-pre.0",
+    "@remix-run/dev": "1.10.0-pre.0",
+    "@remix-run/eslint-config": "1.10.0-pre.0",
+    "@remix-run/testing": "1.10.0-pre.0",
     "@storybook/addon-essentials": "7.0.0-beta.11",
     "@storybook/addon-interactions": "7.0.0-beta.12",
     "@storybook/addon-links": "7.0.0-beta.12",
