@@ -1,6 +1,5 @@
 import type { StorybookConfig } from "@storybook/builder-vite";
 import { mergeConfig } from "vite";
-
 const config: StorybookConfig = {
   stories: [
     "../stories/**/*.stories.mdx",
@@ -14,7 +13,10 @@ const config: StorybookConfig = {
   features: {
     interactionsDebugger: true, // 👈 Enable playback controls
   },
-  core: { builder: "@storybook/builder-vite" },
+
+  core: {
+    builder: "@storybook/builder-vite",
+  },
   framework: "@storybook/react-vite",
   async viteFinal(config) {
     return mergeConfig(config, {
@@ -26,6 +28,9 @@ const config: StorybookConfig = {
       },
     });
   },
+  docs: {
+    docsPage: "automatic",
+    autodocs: true,
+  },
 };
-
 export default config;

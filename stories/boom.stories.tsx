@@ -36,7 +36,6 @@ let story: Meta<typeof LoginForm> = {
           children: [
             {
               path: "/login",
-              // @ts-expect-error shrug
               element: <Story />,
               async action({ request }) {
                 let formData = await request.formData();
