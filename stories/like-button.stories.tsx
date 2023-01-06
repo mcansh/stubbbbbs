@@ -7,7 +7,6 @@ import { useLoaderData } from "@remix-run/react";
 
 function StoryPost() {
   let data = useLoaderData();
-  console.log("data", data);
   return <LikeButton {...data} />;
 }
 
@@ -37,7 +36,7 @@ let story: Meta<typeof LikeButton> = {
 
       return (
         <RemixStub
-          initialLoaderData={{ [args.action]: args }}
+          hydrationData={{ loaderData: { [args.action]: args } }}
           initialEntries={[args.action]}
         />
       );
