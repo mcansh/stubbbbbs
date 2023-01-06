@@ -16,7 +16,6 @@ let story: Meta<typeof Combobox> = {
           path: "/",
           element: <Story />,
         },
-        // @ts-expect-error
         {
           path: "/users",
           loader: remix.loader,
@@ -34,7 +33,7 @@ const Template: StoryFn<typeof Combobox> = (_args) => <Combobox />;
 
 export const ComboboxStory = Template.bind({});
 ComboboxStory.parameters = {
-  remix(args: any) {
+  remix(_args: any) {
     return {
       loader() {
         return [
@@ -60,7 +59,7 @@ ComboboxStory.play = async ({ canvasElement }) => {
 
 export const NoResultsComboboxStory = Template.bind({});
 NoResultsComboboxStory.parameters = {
-  remix(args: any) {
+  remix(_args: any) {
     return {
       loader() {
         return [];
