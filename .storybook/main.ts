@@ -29,7 +29,6 @@ const config: StorybookConfig = {
     });
   },
   docs: {
-    docsPage: "automatic",
     autodocs: true,
   },
 };
