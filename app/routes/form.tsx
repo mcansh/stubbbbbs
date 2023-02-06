@@ -1,6 +1,6 @@
 import type { ActionArgs } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
-import { json } from "../json";
+import { json } from "@remix-run/node";
 
 export async function action({ request }: ActionArgs) {
   let formData = await request.formData();
@@ -47,7 +47,7 @@ export default function LoginPage() {
       ? actionData.errors.email
       : undefined;
   let passwordError =
-    actionData && "errors" in actionData
+    actionData && "errors" in actionData && "password" in actionData.errors
       ? actionData.errors.password
       : undefined;
 

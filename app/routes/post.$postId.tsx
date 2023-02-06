@@ -1,6 +1,6 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { json } from "../json";
+import { json } from "@remix-run/node";
 
 export interface LikeButtonProps {
   label: string;

@@ -1,8 +1,8 @@
 import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
+import { json } from "@remix-run/node";
 import type { Meta } from "@storybook/react";
 import { Outlet, useActionData } from "@remix-run/react";
 import { LoginForm } from "../app/routes/form";
-import { json } from "../app/json";
 
 function StorySetup() {
   let actionData = useActionData();

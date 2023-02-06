@@ -1,8 +1,8 @@
 import { expect } from "@storybook/jest";
 import type { StoryFn, Meta } from "@storybook/react";
 import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
+import { json } from "@remix-run/node";
 import { LikeButton, text } from "../app/routes/post.$postId";
-import { json } from "../app/json";
 import type { DataFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { userEvent, waitFor, within } from "@storybook/testing-library";

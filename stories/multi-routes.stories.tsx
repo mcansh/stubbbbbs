@@ -1,7 +1,7 @@
 import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
 import type { Meta } from "@storybook/react";
 import { Link, Outlet } from "@remix-run/react";
-import { json } from "../app/json";
+import { json } from "@remix-run/node";
 import LoginPage from "../app/routes/form";
 
 function Home() {
