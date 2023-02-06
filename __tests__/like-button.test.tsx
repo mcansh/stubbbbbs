@@ -2,7 +2,7 @@ import { render, waitFor, screen, fireEvent } from "@testing-library/react";
 import { useLoaderData } from "@remix-run/react";
 import { unstable_createRemixStub } from "@remix-run/testing";
 
-import { LikeButton } from "../app/routes/post.$postId";
+import { LikeButton, text } from "../app/routes/post.$postId";
 
 describe("LikeButton", () => {
   let fakePost = {
@@ -49,10 +49,12 @@ describe("LikeButton", () => {
     );
 
     await waitFor(() => screen.getByRole("button"));
-
-    expect(screen.getByRole("button").innerHTML).toMatch("🤍");
+    expect(screen.getByRole("button").innerHTML).toMatch(text.unliked);
   });
 
+  // In this test we no longer need to mock useFetcher return values, the test
+  // also no longer has to know the implementation details of the spelling of
+  // "liked" in the formData
   it("optimistically renders the heart", async () => {
     render(
       <RemixStub
@@ -66,12 +68,17 @@ describe("LikeButton", () => {
     );
 
     fireEvent.click(screen.getByRole("button"));
-    await waitFor(() => screen.getByText("❤️"));
 
+    // check optimistic render, we haven't resolved the action or loader yet
+    await waitFor(() => screen.getByText(text.liked));
+
+    // assert it's optimistic, our action will not have changed this yet
     expect(fakePost.liked).toBe(false);
 
+    // wait for the action
     await waitFor(() => fakePost.liked === true);
 
-    expect(screen.getByText("❤️")).toBeDefined();
+    // expect to still see the heart
+    expect(screen.getByText(text.liked)).toBeDefined();
   });
 });

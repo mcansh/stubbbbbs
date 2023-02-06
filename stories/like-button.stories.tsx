@@ -1,9 +1,11 @@
+import { expect } from "@storybook/jest";
 import type { StoryFn, Meta } from "@storybook/react";
 import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing";
-import { LikeButton } from "../app/routes/post.$postId";
+import { LikeButton, text } from "../app/routes/post.$postId";
 import { json } from "../app/json";
 import type { DataFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { userEvent, waitFor, within } from "@storybook/testing-library";
 
 function StoryPost() {
   let data = useLoaderData();
@@ -74,11 +76,80 @@ MockedSuccess.parameters = {
   },
 };
 
+MockedSuccess.play = async ({ canvasElement, args }) => {
+  const canvas = within(canvasElement);
+
+  // check for defaults
+  await expect(canvas.getByText(text.unliked)).toBeInTheDocument();
+  await expect(args.liked).toBe(false);
+
+  await userEvent.click(canvas.getByRole("button"));
+
+  // check optimistic render, we haven't resolved the action or loader yet
+  await waitFor(() => canvas.getByText(text.liked));
+
+  // assert it's optimistic, our action will not have changed this yet
+  await expect(args.liked).toBe(false);
+
+  // wait for the action
+  await waitFor(() => args.liked === true);
+
+  // expect to still see the heart
+  await expect(canvas.getByText(text.liked)).toBeDefined();
+};
+
+export const MockedSuccessPreLiked = Template.bind({});
+
+MockedSuccessPreLiked.args = {
+  action: "/post/2",
+  label: "Fake Post 2",
+  liked: true,
+};
+
+MockedSuccessPreLiked.parameters = {
+  remix(args: any) {
+    let scopedJunk = args;
+
+    return {
+      loader: async () => {
+        return json(scopedJunk);
+      },
+      async action({ request }: DataFunctionArgs) {
+        let formData = await request.formData();
+        await new Promise((resolve) => setTimeout(resolve, 2_000));
+        scopedJunk.liked = formData.get("liked") === "true";
+        return null;
+      },
+    };
+  },
+};
+
+MockedSuccessPreLiked.play = async ({ canvasElement, args }) => {
+  const canvas = within(canvasElement);
+  // check for defaults
+  await expect(canvas.getByText(text.liked)).toBeInTheDocument();
+  await expect(args.liked).toBe(true);
+
+  await userEvent.click(canvas.getByRole("button"));
+
+  // check optimistic render, we haven't resolved the action or loader yet
+  await waitFor(() => canvas.getByText(text.unliked));
+
+  // assert it's optimistic, our action will not have changed this yet
+  await expect(args.liked).toBe(true);
+
+  // wait for the action
+  await waitFor(() => args.liked === true);
+
+  // expect to still see the white heart
+  await expect(canvas.getByText(text.unliked)).toBeDefined();
+};
+
 export const MockedError = Template.bind({});
 
 MockedError.args = {
-  action: "/post/2",
-  label: "Fake Post 2",
+  action: "/post/3",
+  label: "Fake Post 3",
   liked: false,
 };
 

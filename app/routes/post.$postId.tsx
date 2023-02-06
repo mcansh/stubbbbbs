@@ -8,17 +8,25 @@ export interface LikeButtonProps {
   action: string;
 }
 
+export let text = {
+  liked: "❤️",
+  unliked: "🤍",
+} as const;
+
 export function LikeButton({ liked, label, action }: LikeButtonProps) {
   let fetcher = useFetcher();
+
   let isLiked = fetcher.submission
-    ? fetcher.submission.formData?.get("liked") === "true"
+    ? fetcher.submission.formData.get("liked") === "true"
     : liked;
 
   return (
     <fetcher.Form method="post" action={action}>
-      {/* jsdom doesn't support passing the value of the form submit button since
-          it filters out all buttons from form data in the following code.
-          https://github.com/jsdom/jsdom/blob/e285763ebf46bbc9c883a519c9a18231f5ede9d8/lib/jsdom/living/xhr/FormData-impl.js#L109 */}
+      {/*
+        jsdom doesn't support passing the value of the form submit button since
+        it filters out all buttons from form data in the following code.
+        https://github.com/jsdom/jsdom/blob/e285763ebf46bbc9c883a519c9a18231f5ede9d8/lib/jsdom/living/xhr/FormData-impl.js#L109
+      */}
       <input type="hidden" name="liked" value={String(!isLiked)} />
 
       <button
@@ -27,7 +35,7 @@ export function LikeButton({ liked, label, action }: LikeButtonProps) {
         value={String(!isLiked)}
         type="submit"
       >
-        {isLiked ? "❤️" : "🤍"}
+        {isLiked ? text.liked : text.unliked}
       </button>
 
       {fetcher.data?.error ? (

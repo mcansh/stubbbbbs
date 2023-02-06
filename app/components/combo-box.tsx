@@ -18,6 +18,7 @@ export function Combobox() {
           onChange={(event) => {
             fetcher.submit(event.target.form);
           }}
+          className="rounded border border-gray-400"
         />
       </fetcher.Form>
       <div>
