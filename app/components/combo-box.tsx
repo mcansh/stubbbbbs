@@ -28,7 +28,9 @@ export function Combobox() {
               {user.first_name} {user.last_name}
             </div>
           ))
-        ) : fetcher.state === "idle" && fetcher.data ? (
+        ) : fetcher.state === "idle" &&
+          fetcher.data &&
+          fetcher.data.length === 0 ? (
           <div>No users found</div>
         ) : null}
       </div>
