@@ -36,7 +36,7 @@ let story: Meta<typeof LikeButton> = {
 
       return (
         <RemixStub
-          hydrationData={{ loaderData: { [args.action]: args } }}
+          hydrationData={{ loaderData: { "0": args } }}
           initialEntries={[args.action]}
         />
       );

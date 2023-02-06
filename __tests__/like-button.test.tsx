@@ -25,8 +25,11 @@ describe("LikeButton", () => {
   ]);
 
   function TestSubject() {
-    let data = useLoaderData();
-    return <LikeButton {...data} />;
+    let post = useLoaderData();
+
+    return (
+      <LikeButton action={post.action} label={post.label} liked={post.liked} />
+    );
   }
 
   afterEach(() => {
@@ -38,12 +41,13 @@ describe("LikeButton", () => {
       <RemixStub
         hydrationData={{
           loaderData: {
-            "/post/:postId": fakePost,
+            "0": fakePost,
           },
         }}
         initialEntries={["/post/123"]}
       />
     );
+
     await waitFor(() => screen.getByRole("button"));
 
     expect(screen.getByRole("button").innerHTML).toMatch("🤍");
@@ -54,7 +58,9 @@ describe("LikeButton", () => {
       <RemixStub
         initialEntries={["/post/123"]}
         hydrationData={{
-          loaderData: { "/post/:postId": fakePost },
+          loaderData: {
+            "0": fakePost,
+          },
         }}
       />
     );
