@@ -8,3 +8,5 @@ node_modules
 .yalc
 yalc.lock
 app/styles/app.css
+
+storybook-static

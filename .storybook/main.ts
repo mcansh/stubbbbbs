@@ -1,5 +1,5 @@
-import type { StorybookConfig } from "@storybook/builder-vite";
-import { mergeConfig } from "vite";
+import type { StorybookConfig } from "@storybook/react-vite";
+
 const config: StorybookConfig = {
   stories: [
     "../stories/**/*.stories.mdx",
@@ -10,26 +10,13 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
   ],
-  features: {
-    interactionsDebugger: true, // 👈 Enable playback controls
-  },
-
   core: {
     builder: "@storybook/builder-vite",
   },
   framework: "@storybook/react-vite",
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      define: {
-        global: "window",
-        process: {
-          env: {},
-        },
-      },
-    });
-  },
   docs: {
     autodocs: true,
   },
 };
+
 export default config;
