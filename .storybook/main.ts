@@ -1,6 +1,6 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 
-const config: StorybookConfig = {
+export default {
   stories: [
     "../stories/**/*.stories.mdx",
     "../stories/**/*.stories.@(js|jsx|ts|tsx)",
@@ -9,14 +9,14 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    "@storybook/addon-mdx-gfm",
   ],
-  core: {
-    builder: "@storybook/builder-vite",
+  core: {},
+  framework: {
+    name: "@storybook/react-vite",
+    options: {},
   },
-  framework: "@storybook/react-vite",
   docs: {
     autodocs: true,
   },
-};
-
-export default config;
+} satisfies StorybookConfig
