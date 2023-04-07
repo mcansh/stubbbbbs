@@ -11,12 +11,17 @@ describe("LikeButton", () => {
     liked: false,
   };
 
+  afterEach(() => {
+    fakePost.liked = false;
+  });
+
   let RemixStub = unstable_createRemixStub([
     {
-      path: "/post/:postId",
+      path: "post/:postId",
       loader: () => fakePost,
       element: <TestSubject />,
       action: async ({ request }) => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
         let formData = await request.formData();
         fakePost.liked = JSON.parse(formData.get("liked") as string);
         return null;
@@ -32,19 +37,11 @@ describe("LikeButton", () => {
     );
   }
 
-  afterEach(() => {
-    fakePost.liked = false;
-  });
-
   it("renders an empty heart initially", async () => {
     render(
       <RemixStub
-        hydrationData={{
-          loaderData: {
-            "0": fakePost,
-          },
-        }}
         initialEntries={["/post/123"]}
+        hydrationData={{ loaderData: { "0": fakePost } }}
       />
     );
 
@@ -59,11 +56,7 @@ describe("LikeButton", () => {
     render(
       <RemixStub
         initialEntries={["/post/123"]}
-        hydrationData={{
-          loaderData: {
-            "0": fakePost,
-          },
-        }}
+        hydrationData={{ loaderData: { "0": fakePost } }}
       />
     );
 
