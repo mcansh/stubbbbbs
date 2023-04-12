@@ -1,9 +1,9 @@
+import path from "node:path";
 import type { StorybookConfig } from "@storybook/react-vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default {
-  stories: [
-    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
-  ],
+  stories: ["../stories/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -22,4 +22,10 @@ export default {
   docs: {
     autodocs: true,
   },
-} satisfies StorybookConfig
+  async viteFinal(config) {
+    config.plugins ||= [];
+    config.plugins.push(tsconfigPaths());
+
+    return config;
+  },
+} satisfies StorybookConfig;

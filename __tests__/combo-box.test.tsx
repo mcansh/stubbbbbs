@@ -2,7 +2,7 @@ import { unstable_createRemixStub as createRemixStub } from "@remix-run/testing"
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 
-import { Combobox } from "../app/components/combo-box";
+import { Combobox } from "~/components/combo-box";
 
 describe("Combobox", () => {
   test("should render results", async () => {

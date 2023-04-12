@@ -2,7 +2,7 @@ import { render, waitFor, screen, fireEvent } from "@testing-library/react";
 import { useLoaderData } from "@remix-run/react";
 import { unstable_createRemixStub } from "@remix-run/testing";
 
-import { LikeButton, text } from "../app/routes/post.$postId";
+import { LikeButton, text } from "~/routes/post.$postId";
 
 describe("LikeButton", () => {
   let fakePost = {
