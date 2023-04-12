@@ -2,7 +2,6 @@ import type { StorybookConfig } from "@storybook/react-vite";
 
 export default {
   stories: [
-    "../stories/**/*.stories.mdx",
     "../stories/**/*.stories.@(js|jsx|ts|tsx)",
   ],
   addons: [
@@ -10,6 +9,10 @@ export default {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "@storybook/addon-mdx-gfm",
+    {
+      name: "@storybook/addon-styling",
+      options: { postCss: true },
+    },
   ],
   core: {},
   framework: {
