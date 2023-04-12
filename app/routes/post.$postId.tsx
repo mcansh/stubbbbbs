@@ -16,8 +16,8 @@ export let text = {
 export function LikeButton({ liked, label, action }: LikeButtonProps) {
   let fetcher = useFetcher();
 
-  let isLiked = fetcher.submission
-    ? fetcher.submission.formData.get("liked") === "true"
+  let isLiked = fetcher.formData
+    ? fetcher.formData.get("liked") === "true"
     : liked;
 
   return (
